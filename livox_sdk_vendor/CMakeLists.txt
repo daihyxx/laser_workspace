@@ -8,6 +8,15 @@ macro(build_livox_sdk)
   set(livox_sdk_REV "v2.3.1")
   set(extra_cmake_args)
 
+  # Livox-SDK v2.3.1 bundles an old spdlog/fmt that defines a fallback
+  # `enum char8_t: unsigned char {}`.  char8_t is a keyword since C++20, so
+  # GCC's -Wall (which enables -Wc++20-compat) warns about it, and sdk_core
+  # compiles with -Werror.  Disable just that compatibility warning for the
+  # vendored SDK build (no-op for GCC < 9 / other compilers).
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9)
+    list(APPEND extra_cmake_args "-DCMAKE_CXX_FLAGS=-Wno-c++20-compat")
+  endif()
+
   get_property(multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
   if(NOT multi_config AND DEFINED CMAKE_BUILD_TYPE)
     list(APPEND extra_cmake_args -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
