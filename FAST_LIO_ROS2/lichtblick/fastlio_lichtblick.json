@@ -1,0 +1,89 @@
+{
+  "configById": {
+    "3D!1v5x8q2": {
+      "cameraState": {
+        "perspective": true,
+        "distance": 12,
+        "phi": 60,
+        "thetaOffset": -45,
+        "targetOffset": [0, 0, 0],
+        "target": [0, 0, 0],
+        "targetOrientation": [0, 0, 0, 1],
+        "fovy": 45,
+        "near": 0.01,
+        "far": 5000
+      },
+      "followMode": "follow-none",
+      "followTf": "camera_init",
+      "scene": {
+        "transforms": {
+          "showLabel": true,
+          "axisScale": 1
+        }
+      },
+      "transforms": {
+        "frame:camera_init": {
+          "visible": true
+        },
+        "frame:body": {
+          "visible": true
+        }
+      },
+      "topics": {
+        "/cloud_registered": {
+          "visible": true,
+          "pointSize": 2,
+          "pointShape": "circle",
+          "colorField": "z",
+          "colorMode": "colormap",
+          "colorMap": "turbo"
+        },
+        "/cloud_registered_body": {
+          "visible": false
+        },
+        "/Laser_map": {
+          "visible": false
+        },
+        "/path": {
+          "visible": true
+        },
+        "/Odometry": {
+          "visible": true
+        }
+      },
+      "layers": {
+        "845139cb-26bc-40b3-8161-8ab60af4baf5": {
+          "visible": true,
+          "frameLocked": true,
+          "label": "Grid",
+          "instanceId": "845139cb-26bc-40b3-8161-8ab60af4baf5",
+          "layerId": "foxglove.Grid",
+          "size": 100,
+          "divisions": 100,
+          "lineWidth": 1,
+          "color": "#248eff",
+          "position": [0, 0, 0],
+          "rotation": [0, 0, 0],
+          "order": 1
+        }
+      },
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": "3D!1v5x8q2",
+  "version": 1
+}
