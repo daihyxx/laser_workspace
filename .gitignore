@@ -5,6 +5,7 @@ livox_ros2_driver/launch/__pycache__/*.pyc
 #whitelist
 .vscode/
 FAST_LIO_ROS2/build
+FAST_LIO_ROS2/doc/
 FAST_LIO_ROS2/Log/*.png
 FAST_LIO_ROS2/Log/*.txt
 FAST_LIO_ROS2/Log/*.csv
