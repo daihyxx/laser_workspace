@@ -99,15 +99,21 @@ ros2 launch fast_lio mapping.launch.py
   静态打包(无运行时加载后端),上游 develop 分支的 `packages/suite-base/src/i18n/` 也只有 `en/`(24 个 namespace、
   约 29KB)。想汉化必须自己 fork 源码加 `zh/` 并重新构建 deb,改配置目录塞 JSON 无效。
 
-## 6. Git 仓库结构(重要,勿混淆)
+## 6. Git 仓库结构
 
-本工作区有**两层嵌套 git 仓库**,提交/查看改动时务必区分:
+`src/` 是**唯一**的 git 仓库(remote `git@github.com:daihyxx/laser_workspace.git`,本地 `master` 跟踪 `origin/main`)。
+所有包(含 `FAST_LIO_ROS2/`)都以**普通文件**入库,**没有 submodule、没有嵌套仓库**:
 
-1. `src/` 自身是仓库 **Livox-SDK/livox_ros2_driver**(HEAD `1565b97`),
-   其中 `FAST_LIO_ROS2/` 与 `.vscode/` 是**未跟踪**文件——在 `src/` 下 `git add` 不会包含它们。
-2. `src/FAST_LIO_ROS2/` 是独立仓库 **Ericsii/FAST_LIO_ROS2**(HEAD `2fffc57`),
-   承载了**全部未提交的本地修改**(`git status` 显示 9 个修改文件 + `lichtblick/` 未跟踪)。
-3. `livox_ros2_driver/`、`livox_interfaces/`、`livox_sdk_vendor/` 均与上游一致,无本地改动。
+- `FAST_LIO_ROS2/` 早期是独立 clone(Ericsii/FAST_LIO_ROS2,HEAD `2fffc57`),导致外层仓库一度只记录了一个
+  gitlink(`160000`)而不是文件,且没有 `.gitmodules` → clone 后是空目录、`git submodule` 报
+  `no submodule mapping found`。2026-10-21 已改为普通文件提交:嵌套 `.git` 已删除(旧历史仍存于 `livox_fast.zip`),
+  并删掉了 `include/ikd-Tree/.git` 这个指向失效 gitdir 的死指针(否则该目录会再次变成 gitlink)。
+- `.gitignore` 排除:`FAST_LIO_ROS2/build`、**`FAST_LIO_ROS2/doc/`(128MB 演示 GIF/PDF)**、
+  `FAST_LIO_ROS2/Log/*.{png,txt,csv,pdf}`、`FAST_LIO_ROS2/PCD/*.pcd`、`.vscode/`。
+- `livox_ros2_driver/`、`livox_interfaces/`、`livox_sdk_vendor/` 与上游一致,唯一本地改动是
+  `livox_ros2_driver/config/livox_lidar_config.json`(雷达白名单)。
+- 排查技巧:`git status` 显示干净但某目录内容不在 `git ls-files` 里时,先查
+  `git ls-files -s | awk '$1=="160000"'` 是否有残留 gitlink。
 
 ## 7. FAST_LIO_ROS2 本地未提交修改(核心定制)
 
